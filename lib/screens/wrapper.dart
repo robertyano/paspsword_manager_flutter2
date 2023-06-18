@@ -2,7 +2,7 @@ import 'package:paspsword_manager_flutter2/models/theuser.dart';
 import 'package:paspsword_manager_flutter2/screens/authenticate/authenticate.dart';
 import 'package:paspsword_manager_flutter2/screens/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:paspsword_manager_flutter2/provider.dart';
+import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
