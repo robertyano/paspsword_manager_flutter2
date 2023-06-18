@@ -1,6 +1,6 @@
-import 'package:brew_crew/screens/authenticate/sign_in.dart';
+import 'package:paspsword_manager_flutter2/screens/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:brew_crew/screens/authenticate/register.dart';
+import 'package:paspsword_manager_flutter2/screens/authenticate/register.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
-import 'package:brew_crew/screens/authenticate/register.dart';
-import 'package:brew_crew/services/auth.dart';  // import authentication service to see if user needs to sign-in or register new account
-import 'package:brew_crew/shared/loading.dart';
+import 'package:paspsword_manager_flutter2/screens/authenticate/register.dart';
+import 'package:paspsword_manager_flutter2/services/auth.dart';  // import authentication service to see if user needs to sign-in or register new account
+import 'package:paspsword_manager_flutter2/shared/loading.dart';
 import 'package:flutter/material.dart';  // import material library with many design components
 import 'package:firebase_core/firebase_core.dart';
 

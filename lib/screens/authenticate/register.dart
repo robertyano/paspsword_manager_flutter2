@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:brew_crew/services/auth.dart';
+import 'package:paspsword_manager_flutter2/services/auth.dart';
 
 class Register extends StatefulWidget {
 
