@@ -22,18 +22,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Align(
+        /*title: Align(
             alignment: Alignment.centerLeft,
-            child: Text('Password Secure Kiwi', textAlign: TextAlign.left)),
+            child: Text('Password Secure Kiwi', textAlign: TextAlign.left)),*/
         elevation: 0.0,
         actions: <Widget>[
-          ElevatedButton.icon(
+          /*ElevatedButton.icon(
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
               await _auth.signOut();
             },
-          ),
+          ),*/
           ElevatedButton.icon(
             icon: Icon(Icons.add),
             label: Text('Add Account'),
@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
           return AccountCard(account: account);
         },
       ),
+
     );
   }
 }
