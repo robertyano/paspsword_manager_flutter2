@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paspsword_manager_flutter2/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'newAccount.dart';
+import 'package:paspsword_manager_flutter2/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:paspsword_manager_flutter2/screens/home/account_list.dart';
+import 'package:paspsword_manager_flutter2/models/account.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,72 +14,81 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-  List<Account> _account = [];
+  List<Account_old_original> _account = [];
 
   void _addAccount(String name, String email, String sitePassword, String notes) {
     setState(() {
-      _account.add(Account(name: name, username: email, sitePassword: sitePassword, notes: notes));
+      _account.add(Account_old_original(name: name, username: email, sitePassword: sitePassword, notes: notes));
     });
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        /*title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Password Secure Kiwi', textAlign: TextAlign.left)),*/
-        elevation: 0.0,
-        actions: <Widget>[
-          ElevatedButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-          ElevatedButton.icon(
-            icon: Icon(Icons.add),
-            label: Text('Add Account'),
-            onPressed: () async {
-              // Show a dialog or a bottom sheet to get the details of the new account
-              final account = await showDialog<Account>(
-                context: context,
-                builder: (context) {
-                  return AddAccountDialog();
-                },
-              );
-              if (account != null) {
-                _addAccount(account.name, account.username, account.sitePassword, account.notes);
-              }
-            },
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: _account.length,
-        itemBuilder: (context, index) {
-          Account account = _account[index];
-          return AccountCard(account: account);
-        },
-      ),
+    return StreamProvider<List<Account>?>.value(
+      value: DatabaseService(uid: '').accounts,
+      initialData: null,
+      child: Scaffold(
+        appBar: AppBar(
+          /*title: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Password Secure Kiwi', textAlign: TextAlign.left)),*/
+          elevation: 0.0,
+          actions: <Widget>[
+            ElevatedButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('logout'),
+              onPressed: () async {
+                await _auth.signOut();
+              },
+            ),
+            ElevatedButton.icon(
+              icon: Icon(Icons.add),
+              label: Text('Add Account'),
+              onPressed: () async {
+                // Show a dialog or a bottom sheet to get the details of the new account
+                final account = await showDialog<Account_old_original>(
+                  context: context,
+                  builder: (context) {
+                    return AddAccountDialog();
+                  },
+                );
+                if (account != null) {
+                  _addAccount(account.name, account.username, account.sitePassword, account.notes);
+                }
+              },
+            ),
+          ],
+        ),
 
+       body: AccountList(),
+
+        // original list view, which may be deprecated
+       /* body: ListView.builder(
+          itemCount: _account.length,
+          itemBuilder: (context, index) {
+            Account account = _account[index];
+            return AccountCard(account: account);
+         },
+        ),*/
+
+      ),
     );
   }
 }
 
-class Account {
+
+class Account_old_original {
   final String name;
   final String username;
   final String sitePassword;
   final String notes;
 
-  Account({required this.name, required this.username, required this.sitePassword, required this.notes});
+  Account_old_original({required this.name, required this.username, required this.sitePassword, required this.notes});
 }
 
 class AccountCard extends StatefulWidget {
-  final Account account;
+  final Account_old_original account;
 
   AccountCard({required this.account});
 
@@ -116,7 +130,7 @@ class _AccountCardState extends State<AccountCard> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     // Show the dialog to edit the account details
-                    showDialog<Account>(
+                    showDialog<Account_old_original>(
                       context: context,
                       builder: (context) {
                         return EditAccountDialog(account: widget.account);
@@ -155,7 +169,7 @@ class _AccountCardState extends State<AccountCard> {
 
 
 class EditAccountDialog extends StatefulWidget {
-  late final Account account;
+  late final Account_old_original account;
 
   EditAccountDialog({required this.account});
 
@@ -165,7 +179,7 @@ class EditAccountDialog extends StatefulWidget {
 
 class _EditAccountDialogState extends State<EditAccountDialog> {
   final _formKey = GlobalKey<FormState>();
-  late Account _account;
+  late Account_old_original _account;
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -240,7 +254,7 @@ class _EditAccountDialogState extends State<EditAccountDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               // _formKey.currentState!.save();
-              Navigator.of(context).pop(Account(
+              Navigator.of(context).pop(Account_old_original(
                 name: _nameController.text,
                 username: _emailController.text,
                 sitePassword: _passwordController.text,

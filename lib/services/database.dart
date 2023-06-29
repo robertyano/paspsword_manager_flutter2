@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paspsword_manager_flutter2/models/account.dart';
 
 class DatabaseService {
 
@@ -14,6 +15,24 @@ class DatabaseService {
       'password' : password,
       'notes' : notes,
     });
+  }
+
+  // account list from snapshot
+  List<Account> _accountListFromSnapshot(QuerySnapshot snapshot) {
+      return snapshot.docs.map((doc){
+        return Account(
+            accountName: doc.get('accountName') ?? '',
+            password: doc.get('password') ?? '',
+            notes: doc.get('notes') ?? ''
+        );
+      }).toList();
+  }
+
+  // get accounts stream
+  Stream<List<Account>> get accounts {
+    return accountCollection.snapshots()
+        .map(_accountListFromSnapshot);
+
   }
 
 }
