@@ -25,6 +25,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    void _showSettingsPanel() {
+      showModalBottomSheet(context: context, builder: (context){
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          child: Text('bottom sheet'),
+        );
+      });
+    }
+
     return StreamProvider<List<Account>?>.value(
       value: DatabaseService(uid: '').accounts,
       initialData: null,
@@ -37,11 +47,18 @@ class _HomeState extends State<Home> {
           actions: <Widget>[
             ElevatedButton.icon(
               icon: Icon(Icons.person),
-              label: Text('logout'),
+              label: Text('logout',),
               onPressed: () async {
                 await _auth.signOut();
               },
             ),
+            ElevatedButton.icon(
+              icon: Icon (Icons.settings),
+              label: Text('settings'),
+              onPressed: () => _showSettingsPanel(),
+            ),
+
+
             ElevatedButton.icon(
               icon: Icon(Icons.add),
               label: Text('Add Account'),
