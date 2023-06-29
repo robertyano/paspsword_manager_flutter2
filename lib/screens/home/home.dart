@@ -27,13 +27,13 @@ class _HomeState extends State<Home> {
             child: Text('Password Secure Kiwi', textAlign: TextAlign.left)),*/
         elevation: 0.0,
         actions: <Widget>[
-          /*ElevatedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
               await _auth.signOut();
             },
-          ),*/
+          ),
           ElevatedButton.icon(
             icon: Icon(Icons.add),
             label: Text('Add Account'),
