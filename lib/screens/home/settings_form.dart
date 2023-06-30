@@ -30,7 +30,7 @@ class _SettingsFormState extends State<SettingsForm> {
 
   // form values
   late String _currentAccountName;
-  late String _curretuserName;
+  late String _currentUserName;
   late String _currentPassword;
   String _currentNotes = ''; // Initialize to an empty string because this is not a required field
 
@@ -38,14 +38,11 @@ class _SettingsFormState extends State<SettingsForm> {
   void initState() {
     super.initState();
     // Initialize form values if a new account is being created
-    if (widget.account.accountName.isEmpty &&
-        widget.account.userName.isEmpty &&
-        widget.account.password.isEmpty && widget.account.notes.isEmpty) {
-      _currentAccountName = '';
-      _curretuserName = '';
-      _currentPassword = '';
-      _currentNotes = '';
-    }
+    _currentAccountName = widget.account.accountName;
+    _currentUserName = widget.account.userName;
+    _currentPassword = widget.account.password;
+    _currentNotes = widget.account.notes;
+
   }
 
 
@@ -71,7 +68,7 @@ class _SettingsFormState extends State<SettingsForm> {
             initialValue: widget.account.userName,
             decoration: InputDecoration(labelText: "Username"),
             validator: (val) => val!.isEmpty ? 'Please enter a username' : null,
-            onChanged: (val) => setState(() => _curretuserName = val),
+            onChanged: (val) => setState(() => _currentUserName = val),
           ),
           SizedBox(height: 20.0,),
           TextFormField(
@@ -100,7 +97,7 @@ class _SettingsFormState extends State<SettingsForm> {
               if (_formKey.currentState!.validate()) {
                 Account updatedAccount = Account(
                   accountName: _currentAccountName,
-                  userName: _curretuserName,
+                  userName: _currentUserName,
                   password: _currentPassword,
                   notes: _currentNotes,
                   documentId: widget.account.documentId, // Use the documentId from the current account
