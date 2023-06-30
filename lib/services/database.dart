@@ -10,7 +10,7 @@ class DatabaseService {
   final CollectionReference accountCollection = FirebaseFirestore.instance.collection('accounts');
 
   Future updateUserData(String accountName, String userName, String password, String notes) async {
-    return await accountCollection.doc(uid).set({
+    return await accountCollection.doc(uid).collection('userAccounts').add({
       'accountName' : accountName,
       'userName' : userName,
       'password' : password,
@@ -20,21 +20,19 @@ class DatabaseService {
 
   // account list from snapshot
   List<Account> _accountListFromSnapshot(QuerySnapshot snapshot) {
-      return snapshot.docs.map((doc){
-        return Account(
-            accountName: doc.get('accountName') ?? '',
-            userName: doc.get('userName') ?? '',
-            password: doc.get('password') ?? '',
-            notes: doc.get('notes') ?? '',
-        );
-      }).toList();
+    return snapshot.docs.map((doc){
+      return Account(
+        accountName: doc.get('accountName') ?? '',
+        userName: doc.get('userName') ?? '',
+        password: doc.get('password') ?? '',
+        notes: doc.get('notes') ?? '',
+      );
+    }).toList();
   }
 
   // get accounts stream
   Stream<List<Account>> get accounts {
-    return accountCollection.snapshots()
+    return accountCollection.doc(uid).collection('userAccounts').snapshots()
         .map(_accountListFromSnapshot);
-
   }
-
 }

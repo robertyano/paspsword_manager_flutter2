@@ -83,7 +83,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 await _databaseService.updateUserData(_currentAccountName, _curretuserName, _currentPassword, _currentNotes);
                 print('Account Updated');
                 // SettingsForm(uid: uid); // updated build
-
+                Navigator.pop(context);  // Close the bottom sheet
               }
 
             },

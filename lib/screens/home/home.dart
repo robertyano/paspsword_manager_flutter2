@@ -18,6 +18,17 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   List<Account_old_original> _account = [];
+  late final DatabaseService databaseService; // Define databaseService here
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      databaseService = DatabaseService(uid: currentUser.uid);
+    }
+  }
+
 
   void _addAccount(String name, String email, String sitePassword, String notes) {
     setState(() {
@@ -38,8 +49,19 @@ class _HomeState extends State<Home> {
       });
     }
 
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    /*if (currentUser != null) {
+      final databaseService = DatabaseService(uid: currentUser.uid);
+      // Use databaseService to build your widget.
+    } else {
+      // Show a loading spinner or some other placeholder.
+    }*/
+
+
     return StreamProvider<List<Account>?>.value(
-      value: DatabaseService(uid: '').accounts,
+      value: databaseService.accounts,
+      //value: DatabaseService(uid: '').accounts,
       initialData: null,
       child: Scaffold(
         appBar: AppBar(
@@ -62,22 +84,7 @@ class _HomeState extends State<Home> {
             ),
 
 
-            ElevatedButton.icon(
-              icon: Icon(Icons.add),
-              label: Text('Add Account'),
-              onPressed: () async {
-                // Show a dialog or a bottom sheet to get the details of the new account
-                final account = await showDialog<Account_old_original>(
-                  context: context,
-                  builder: (context) {
-                    return AddAccountDialog();
-                  },
-                );
-                if (account != null) {
-                  _addAccount(account.name, account.username, account.sitePassword, account.notes);
-                }
-              },
-            ),
+
           ],
         ),
 
