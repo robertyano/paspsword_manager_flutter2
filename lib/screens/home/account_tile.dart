@@ -5,7 +5,9 @@ class AccountTile extends StatelessWidget {
   // const AccountTile({super.key});
 
   final Account account;
-  AccountTile({required this.account});
+  final Function(Account) onAccountSelected;
+
+  AccountTile({required this.account, required this.onAccountSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class AccountTile extends StatelessWidget {
           ),
           title: Text(account.accountName),
           subtitle: Text(account.password),
+          onTap: () => onAccountSelected(account),
         ),
       )
     );

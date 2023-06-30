@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:paspsword_manager_flutter2/screens/home/account_tile.dart';
 
 class AccountList extends StatefulWidget {
-  const AccountList({super.key});
+  final Function(Account) onAccountSelected;
+
+  AccountList({required this.onAccountSelected, Key? key}) : super(key: key);
 
   @override
   State<AccountList> createState() => _AccountListState();
@@ -21,23 +23,11 @@ class _AccountListState extends State<AccountList> {
       return CircularProgressIndicator(); // show a loading spinner
     } else {
       return ListView.builder(
-          itemCount: accounts.length,
-          itemBuilder: (context, index) {
-            return AccountTile(account: accounts[index]);
-          },
-        );
-      }
+        itemCount: accounts.length,
+        itemBuilder: (context, index) {
+          return AccountTile(account: accounts[index], onAccountSelected: widget.onAccountSelected);
+        },
+      );
     }
   }
-
-      /*return ListView.builder(
-        itemCount: accounts?.length,
-        itemBuilder: (context, index) {
-
-          //print('account at index $index: $accounts'); //debugging to find null account
-
-          return AccountTile(account: accounts[index]);
-        },
-      );*/
-
-
+}

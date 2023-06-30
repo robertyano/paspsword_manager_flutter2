@@ -2,13 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paspsword_manager_flutter2/shared/constants.dart';
 import 'package:paspsword_manager_flutter2/services/database.dart';
+import 'package:paspsword_manager_flutter2/models/account.dart';
+
 
 class SettingsForm extends StatefulWidget {
   //const SettingsForm({super.key});
 
   final String uid;
+  final Account account;
 
-  const SettingsForm({Key? key, required this.uid}) : super(key: key);
+  SettingsForm({required this.uid, required this.account});
+  //const SettingsForm({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<SettingsForm> createState() => _SettingsFormState(uid: uid);

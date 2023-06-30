@@ -40,11 +40,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    void _showSettingsPanel() {
+    void _showSettingsPanel(Account account) {
       showModalBottomSheet(context: context, builder: (context){
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: SettingsForm(uid: FirebaseAuth.instance.currentUser!.uid),
+          child: SettingsForm(account: account, uid: FirebaseAuth.instance.currentUser!.uid),
         );
       });
     }
@@ -80,7 +80,11 @@ class _HomeState extends State<Home> {
             ElevatedButton.icon(
               icon: Icon (Icons.add),
               label: Text('Add Account'),
-              onPressed: () => _showSettingsPanel(),
+              onPressed: () {
+                // Create a new account with empty fields
+                Account newAccount = Account(accountName: '', password: '', notes: '', userName: '');
+                _showSettingsPanel(newAccount);
+              },
             ),
 
 
@@ -88,7 +92,11 @@ class _HomeState extends State<Home> {
           ],
         ),
 
-       body: AccountList(),
+       body: AccountList(
+         onAccountSelected: (account) {
+           _showSettingsPanel(account);
+         },
+       ),
 
         // original list view, which may be deprecated
        /* body: ListView.builder(
