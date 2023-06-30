@@ -34,6 +34,20 @@ class _SettingsFormState extends State<SettingsForm> {
   late String _currentPassword;
   String _currentNotes = ''; // Initialize to an empty string because this is not a required field
 
+  @override
+  void initState() {
+    super.initState();
+    // Initialize form values if a new account is being created
+    if (widget.account.accountName.isEmpty &&
+        widget.account.userName.isEmpty &&
+        widget.account.password.isEmpty && widget.account.notes.isEmpty) {
+      _currentAccountName = '';
+      _curretuserName = '';
+      _currentPassword = '';
+      _currentNotes = '';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
