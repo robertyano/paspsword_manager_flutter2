@@ -1,22 +1,34 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:paspsword_manager_flutter2/shared/constants.dart';
+import 'package:paspsword_manager_flutter2/services/database.dart';
 
 class SettingsForm extends StatefulWidget {
-  const SettingsForm({super.key});
+  //const SettingsForm({super.key});
+
+  final String uid;
+
+  const SettingsForm({Key? key, required this.uid}) : super(key: key);
 
   @override
-  State<SettingsForm> createState() => _SettingsFormState();
+  State<SettingsForm> createState() => _SettingsFormState(uid: uid);
+
 }
 
 class _SettingsFormState extends State<SettingsForm> {
 
+  final String uid;  // added to accept uid
+  _SettingsFormState({required this.uid});
+
   final _formKey = GlobalKey<FormState>();
+  // creating instance of 'DatabaseService' with user's ID
+  final DatabaseService _databaseService = DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid); // update UID to be dynamic
 
   // form values
   late String _currentAccountName;
   late String _curretuserName;
   late String _currentPassword;
-  late String _currentNotes;
+  String _currentNotes = ''; // Initialize to an empty string because this is not a required field
 
 
   @override
@@ -26,7 +38,7 @@ class _SettingsFormState extends State<SettingsForm> {
       child: Column(
         children: <Widget> [
           Text(
-            'Update Account Details',
+            'Add New Account',
             style: TextStyle(fontSize: 18.0),
           ),
           SizedBox(height: 20.0,),
@@ -50,8 +62,9 @@ class _SettingsFormState extends State<SettingsForm> {
           SizedBox(height: 20.0,),
           TextFormField(
             decoration: InputDecoration(labelText: "Notes"),
-            validator: (val) => val!.isEmpty ? '' : null,
-            onChanged: (val) => setState(() => _currentNotes = val),
+            // validator: (val) => val!.isEmpty ? '' : null,
+            onChanged: (val) => setState(() => _currentNotes = (val.isEmpty ? null : val)!),
+
           ),
 
 
@@ -62,10 +75,17 @@ class _SettingsFormState extends State<SettingsForm> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () async {
-              print(_currentAccountName);
+              /*print(_currentAccountName);
               print(_curretuserName);
               print(_currentPassword);
-              print(_currentNotes);
+              print(_currentNotes);*/
+              if (_formKey.currentState!.validate()) {
+                await _databaseService.updateUserData(_currentAccountName, _curretuserName, _currentPassword, _currentNotes);
+                print('Account Updated');
+                // SettingsForm(uid: uid); // updated build
+
+              }
+
             },
           ),
          ],

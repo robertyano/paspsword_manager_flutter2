@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paspsword_manager_flutter2/screens/home/settings_form.dart';
 import 'package:paspsword_manager_flutter2/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:paspsword_manager_flutter2/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:paspsword_manager_flutter2/screens/home/account_list.dart';
 import 'package:paspsword_manager_flutter2/models/account.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -31,7 +33,7 @@ class _HomeState extends State<Home> {
       showModalBottomSheet(context: context, builder: (context){
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: SettingsForm(),
+          child: SettingsForm(uid: FirebaseAuth.instance.currentUser!.uid),
         );
       });
     }
@@ -54,8 +56,8 @@ class _HomeState extends State<Home> {
               },
             ),
             ElevatedButton.icon(
-              icon: Icon (Icons.settings),
-              label: Text('settings'),
+              icon: Icon (Icons.add),
+              label: Text('Add Account'),
               onPressed: () => _showSettingsPanel(),
             ),
 
@@ -205,12 +207,23 @@ class _EditAccountDialogState extends State<EditAccountDialog> {
 
   @override
   void initState() {
-    super.initState();
+
+    late DatabaseService _databaseService;
+
+    @override
+    void initState() {
+      super.initState();
+      _databaseService = DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid);
+    }
+
+
+    // Old code, remove when new ListView is working
+   /* super.initState();
     _account = widget.account;
     _nameController = TextEditingController(text: widget.account.name);
     _emailController = TextEditingController(text: widget.account.username);
     _passwordController = TextEditingController(text: widget.account.sitePassword);
-    _notesController = TextEditingController(text: widget.account.notes);
+    _notesController = TextEditingController(text: widget.account.notes)*/;
   }
 
   @override
