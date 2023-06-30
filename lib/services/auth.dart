@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:paspsword_manager_flutter2/services/database.dart';
 
+import '../models/account.dart';
+
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,13 +53,15 @@ class AuthService {
       User? user = result.user;
 
       // create a new document for that user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('new account', 'new username', 'new password', '');
+      Account newAccount = Account(accountName: 'new account', userName: 'new username', password: 'new password', notes: '', documentId: ''); // create new Account object
+      await DatabaseService(uid: user!.uid).updateUserData(newAccount); // pass the Account object
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());
       return null;
     }
   }
+
 
   // sign out
   Future signOut() async {

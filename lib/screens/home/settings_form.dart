@@ -47,24 +47,28 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           SizedBox(height: 20.0,),
           TextFormField(
+            initialValue: widget.account.accountName,
             decoration: InputDecoration(labelText: "Account Name"),
             validator: (val) => val!.isEmpty ? 'Please enter an account name' : null,
             onChanged: (val) => setState(() => _currentAccountName = val),
             ),
           SizedBox(height: 20.0,),
           TextFormField(
+            initialValue: widget.account.userName,
             decoration: InputDecoration(labelText: "Username"),
             validator: (val) => val!.isEmpty ? 'Please enter a username' : null,
             onChanged: (val) => setState(() => _curretuserName = val),
           ),
           SizedBox(height: 20.0,),
           TextFormField(
+            initialValue: widget.account.password,
             decoration: InputDecoration(labelText: "Password"),
             validator: (val) => val!.isEmpty ? 'Please enter a password' : null,
             onChanged: (val) => setState(() => _currentPassword = val),
           ),
           SizedBox(height: 20.0,),
           TextFormField(
+            initialValue: widget.account.notes,
             decoration: InputDecoration(labelText: "Notes"),
             // validator: (val) => val!.isEmpty ? '' : null,
             onChanged: (val) => setState(() => _currentNotes = (val.isEmpty ? null : val)!),
@@ -79,20 +83,22 @@ class _SettingsFormState extends State<SettingsForm> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () async {
-              /*print(_currentAccountName);
-              print(_curretuserName);
-              print(_currentPassword);
-              print(_currentNotes);*/
               if (_formKey.currentState!.validate()) {
-                await _databaseService.updateUserData(_currentAccountName, _curretuserName, _currentPassword, _currentNotes);
+                Account updatedAccount = Account(
+                  accountName: _currentAccountName,
+                  userName: _curretuserName,
+                  password: _currentPassword,
+                  notes: _currentNotes,
+                  documentId: widget.account.documentId, // Use the documentId from the current account
+                );
+                await _databaseService.updateUserData(updatedAccount);
                 print('Account Updated');
-                // SettingsForm(uid: uid); // updated build
                 Navigator.pop(context);  // Close the bottom sheet
               }
-
             },
           ),
-         ],
+
+        ],
         ),
       );
     }

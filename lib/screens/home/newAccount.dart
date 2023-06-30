@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 
 
-class AddAccountDialog extends StatefulWidget {
+/*class AddAccountDialog extends StatefulWidget {
   @override
   _AddAccountDialogState createState() => _AddAccountDialogState();
-}
+}*/
 
-class _AddAccountDialogState extends State<AddAccountDialog> {
+/*class _AddAccountDialogState extends State<AddAccountDialog> {
   final _formKey = GlobalKey<FormState>();
   String _name ='';
   String _username = '';
@@ -88,4 +88,4 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
       ],
     );
   }
-}
+}*/
