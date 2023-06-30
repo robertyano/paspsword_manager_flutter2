@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paspsword_manager_flutter2/screens/home/settings_form.dart';
 import 'package:paspsword_manager_flutter2/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'newAccount.dart';
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
       showModalBottomSheet(context: context, builder: (context){
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: Text('bottom sheet'),
+          child: SettingsForm(),
         );
       });
     }

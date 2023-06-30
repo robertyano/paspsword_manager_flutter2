@@ -51,7 +51,7 @@ class AuthService {
       User? user = result.user;
 
       // create a new document for that user with the uid
-      await DatabaseService(uid: user!.uid).updateUserData('new account', 'new password', '');
+      await DatabaseService(uid: user!.uid).updateUserData('new account', 'new username', 'new password', '');
       return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());

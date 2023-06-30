@@ -9,9 +9,10 @@ class DatabaseService {
   // collection reference
   final CollectionReference accountCollection = FirebaseFirestore.instance.collection('accounts');
 
-  Future updateUserData(String accountName, String password, String notes) async {
+  Future updateUserData(String accountName, String userName, String password, String notes) async {
     return await accountCollection.doc(uid).set({
       'accountName' : accountName,
+      'userName' : userName,
       'password' : password,
       'notes' : notes,
     });
@@ -22,8 +23,9 @@ class DatabaseService {
       return snapshot.docs.map((doc){
         return Account(
             accountName: doc.get('accountName') ?? '',
+            userName: doc.get('userName') ?? '',
             password: doc.get('password') ?? '',
-            notes: doc.get('notes') ?? ''
+            notes: doc.get('notes') ?? '',
         );
       }).toList();
   }
