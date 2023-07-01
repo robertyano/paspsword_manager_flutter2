@@ -29,7 +29,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Email'),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           // code to execute if the value is null or empty
