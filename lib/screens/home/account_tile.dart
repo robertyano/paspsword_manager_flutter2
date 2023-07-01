@@ -19,9 +19,10 @@ class AccountTile extends StatelessWidget {
           leading: CircleAvatar(
             radius: 25.0,
             backgroundColor: Colors.red,
+            backgroundImage: AssetImage('assets/evil_kiwi_bird_tattoo_design.png'),
           ),
-          title: Text(account.accountName),
-          subtitle: Text(account.password),
+          title: Text('Account: ' + account.accountName),
+          subtitle: Text('Username: ' + account.userName),
           onTap: () => onAccountSelected(account),
         ),
       )
