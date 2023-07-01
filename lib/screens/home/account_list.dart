@@ -5,8 +5,9 @@ import 'package:paspsword_manager_flutter2/screens/home/account_tile.dart';
 
 class AccountList extends StatefulWidget {
   final Function(Account) onAccountSelected;
+  final Function(Account) onDeleteAccount; // Add onDeleteAccount callback
 
-  AccountList({required this.onAccountSelected, Key? key}) : super(key: key);
+  AccountList({required this.onAccountSelected, required this.onDeleteAccount, Key? key}) : super(key: key);
 
   @override
   State<AccountList> createState() => _AccountListState();
@@ -15,17 +16,19 @@ class AccountList extends StatefulWidget {
 class _AccountListState extends State<AccountList> {
   @override
   Widget build(BuildContext context) {
-
     final accounts = Provider.of<List<Account>?>(context);
 
     if (accounts == null) {
-      // return Text('No accounts');
       return CircularProgressIndicator(); // show a loading spinner
     } else {
       return ListView.builder(
         itemCount: accounts.length,
         itemBuilder: (context, index) {
-          return AccountTile(account: accounts[index], onAccountSelected: widget.onAccountSelected);
+          return AccountTile(
+            account: accounts[index],
+            onAccountSelected: widget.onAccountSelected,
+            onDeleteAccount: widget.onDeleteAccount, // Pass the onDeleteAccount callback
+          );
         },
       );
     }

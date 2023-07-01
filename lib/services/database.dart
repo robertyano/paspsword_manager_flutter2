@@ -32,6 +32,10 @@ class DatabaseService {
     }
   }
 
+  Future<void> deleteAccount(String documentId) async {
+    await accountCollection.doc(uid).collection('userAccounts').doc(documentId).delete();
+  }
+
 
 
 

@@ -88,25 +88,44 @@ class _SettingsFormState extends State<SettingsForm> {
 
 
           SizedBox(height: 20.0,),
-          ElevatedButton(
-            child: Text(
-              'Update',
-              style: TextStyle(color: Colors.white),
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context); // Cancel and go back
+                  },
+                ),
+                SizedBox(width: 10.0),
+                ElevatedButton(
+                  child: Text(
+                    'Update',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      Account updatedAccount = Account(
+                        accountName: _currentAccountName,
+                        userName: _currentUserName,
+                        password: _currentPassword,
+                        notes: _currentNotes,
+                        documentId: widget.account.documentId, // Use the documentId from the current account
+                      );
+                      await _databaseService.updateUserData(updatedAccount);
+                      print('Account Updated');
+                      Navigator.pop(context);  // Close the bottom sheet
+                    }
+                  },
+                ),
+              ],
             ),
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                Account updatedAccount = Account(
-                  accountName: _currentAccountName,
-                  userName: _currentUserName,
-                  password: _currentPassword,
-                  notes: _currentNotes,
-                  documentId: widget.account.documentId, // Use the documentId from the current account
-                );
-                await _databaseService.updateUserData(updatedAccount);
-                print('Account Updated');
-                Navigator.pop(context);  // Close the bottom sheet
-              }
-            },
           ),
 
         ],
