@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
             child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.stretch, //Attempt to fix, delete if necessary
                 children: <Widget>[
-                  AspectRatio(aspectRatio: 1, child: Image.asset('assets/evil_kiwi_bird_tattoo_design.png', fit: BoxFit.fitWidth),),
+                  AspectRatio(aspectRatio: 1, child: Image.asset('assets/evil_kiwi_logo.jpg', fit: BoxFit.fitWidth),),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal:15),
                   ),
