@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = Password Secure Kiwi;
+PRODUCT_NAME = paspsword_manager_flutter2
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.robertyano.psk;
+PRODUCT_BUNDLE_IDENTIFIER = com.example.paspswordManagerFlutter2
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

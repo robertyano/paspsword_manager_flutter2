@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Password Secure Kiwi"
+        android:label="paspsword_manager_flutter2"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
