@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792874032621:android:969b385cbcfc206ea89be4",
+        "mobilesdk_app_id": "1:792874032621:android:64b4abeff31333c0a89be4",
         "android_client_info": {
-          "package_name": "com.example.paspsword_manager_flutter2"
+          "package_name": "com.robertyano.brew_crew"
         }
       },
       "oauth_client": [
@@ -43,9 +43,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792874032621:android:64b4abeff31333c0a89be4",
+        "mobilesdk_app_id": "1:792874032621:android:77447452e1d54df8a89be4",
         "android_client_info": {
-          "package_name": "com.robertyano.brew_crew"
+          "package_name": "com.robertyano.passwordsecurekiwi"
         }
       },
       "oauth_client": [
