@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:paspsword_manager_flutter2/screens/home/account_list.dart';
 import 'package:paspsword_manager_flutter2/models/account.dart';
 
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -27,6 +26,8 @@ class _HomeState extends State<Home> {
       databaseService = DatabaseService(uid: currentUser.uid);
     }
   }
+
+
 
   void _showSettingsPanel(Account account) {
     showModalBottomSheet(
@@ -54,6 +55,16 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
           actions: <Widget>[
             ElevatedButton.icon(
               icon: Icon(Icons.person),
@@ -72,6 +83,41 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Delete Account'),
+                onTap: () {
+                  // Perform action for Settings Option 1
+                },
+              ),
+
+              /*ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings Option 2'),
+                onTap: () {
+                  // Perform action for Settings Option 2
+                },
+              ),
+              // Add more ListTile widgets for additional settings options*/
+            ],
+          ),
+        ),
         body: AccountList(
           onAccountSelected: (account) {
             _showSettingsPanel(account);
@@ -84,6 +130,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-
-
