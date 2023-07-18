@@ -8,6 +8,8 @@ import 'package:paspsword_manager_flutter2/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:paspsword_manager_flutter2/screens/home/account_list.dart';
 import 'package:paspsword_manager_flutter2/models/account.dart';
+import 'package:flutter/material.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -27,12 +29,38 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void _deleteAccount() async {
-    bool success = await _auth.deleteAccount();
-    if (success) {
-      // Account deleted successfully, perform additional actions if needed
-    } else {
-      // Failed to delete account, handle the error
+  Future<void> _deleteAccount() async {
+    bool confirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Deletion'),
+          content: Text("Are you sure you want to delete your account? This action is irreversible and will permanently erase your account and all associated details from Password Secure Kiwi."),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false to indicate cancellation
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true to indicate deletion confirmation
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      bool success = await _auth.deleteAccount();
+      if (success) {
+        // Account deleted successfully, perform additional actions if needed
+      } else {
+        // Failed to delete account, handle the error
+      }
     }
   }
 
