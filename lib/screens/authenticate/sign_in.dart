@@ -30,124 +30,120 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(  // scaffolds implement the basic Material Design visual layout structure
-      // class provies APIs for showing drawers and bottom sheet
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Password Secure Kiwi'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Container(
-          // height: MediaQuery.of(context).size.height, // Attempt to fix, bring back if necessary
           padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
           child: Form(
             key: _formKey,
             child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.stretch, //Attempt to fix, delete if necessary
-                children: <Widget>[
-                  AspectRatio(aspectRatio: 1, child: Image.asset('assets/evil_kiwi_logo.jpg', fit: BoxFit.fitWidth),),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal:15),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: screenHeight * 0.35,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.asset('assets/evil_kiwi_logo.jpg', fit: BoxFit.fitWidth),
                   ),
-                  const SizedBox(height: 20.0),
-                  SizedBox(
-                    width: 400.0,
-                    child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Email',
-                          // labelText: 'Email',
-                        ),
-                        validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                        onChanged: (val) {
-                          setState(() => email = val);
-                        }
+                ),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  width: screenWidth * 0.8,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Email',
                     ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 0, bottom: 0),
-                  ),
-                  TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Password',
-                      ),
-                      validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
-                      obscureText: true,
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      }
-                  ),
-                  TextButton(
-                    onPressed: (){
-                      //TODO FORGOT PASSWORD SCREEN GOES HERE
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
-                      );
+                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                    onChanged: (val) {
+                      setState(() => email = val);
                     },
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  width: screenWidth * 0.8,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                    validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
+                    obscureText: true,
+                    onChanged: (val) {
+                      setState(() => password = val);
+                    },
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // TODO: FORGOT PASSWORD SCREEN GOES HERE
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                    );
+                  },
+                  child: const Text(
+                    'Forgot Password',
+                    style: TextStyle(color: Colors.blue, fontSize: 15),
+                  ),
+                ),
+                Container(
+                  height: screenHeight * 0.07,
+                  width: screenWidth * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ElevatedButton(
                     child: const Text(
-                      'Forgot Password',
-                      style: TextStyle(color: Colors.blue, fontSize: 15),
+                      'Login',
+                      style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
-                  ),
-
-                  Container(
-                    height: 50,
-                    width: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-                    child: ElevatedButton(
-                        child: const Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white, fontSize: 25)
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            setState(() => loading = true);
-                            dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-                            if (result == null) {
-                              setState(() {
-                                error = 'Could not sign in with those credentials';
-                                loading = false;
-                              });
-                            }
-                          }
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() => loading = true);
+                        dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                        if (result == null) {
+                          setState(() {
+                            error = 'Could not sign in with those credentials';
+                            loading = false;
+                          });
                         }
-                    ),
+                      }
+                    },
                   ),
-                  SizedBox(height: 12.0),
-                  Text(
-                    error,
-                    style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                ),
+                const SizedBox(height: 12.0),
+                Text(
+                  error,
+                  style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                ),
+                const SizedBox(height: 8.0),
+                TextButton(
+                  onPressed: () {
+                    // TODO: Register new user
+                    widget.toggleView();
+                  },
+                  child: const Text(
+                    'New User? Create Account',
+                    style: TextStyle(color: Colors.grey, fontSize: 15),
                   ),
-
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: TextButton(
-                      onPressed: (){
-                        //TODO Register new user
-                        widget.toggleView();
-                      },
-                      child: const Text(
-                        'New User? Create Account',
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                    ),
-                  ),
-
-                  // Text(
-                  //     error,
-                  //     style: const TextStyle(color: Colors.red, fontSize: 14.0)
-                  // ),
-                ]
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
+
 }
