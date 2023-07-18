@@ -68,14 +68,21 @@ class _HomeState extends State<Home> {
   void _showSettingsPanel(Account account) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: SettingsForm(account: account, uid: FirebaseAuth.instance.currentUser!.uid),
+        return FractionallySizedBox(
+          heightFactor: 0.6, // Adjust this value as needed
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+              child: SettingsForm(account: account, uid: FirebaseAuth.instance.currentUser!.uid),
+            ),
+          ),
         );
       },
     );
   }
+
 
   void _deleteSngleAccount(Account account) async {
     await databaseService.deleteAccount(account.documentId);
