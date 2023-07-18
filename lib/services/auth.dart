@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paspsword_manager_flutter2/models/theuser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -61,6 +62,38 @@ class AuthService {
       return null;
     }
   }
+
+  Future<bool> deleteAccount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        // Delete all user accounts
+        await _deleteUserAccounts(currentUser.uid);
+
+        // Delete the user account
+        await currentUser.delete();
+
+        return true; // Account deleted successfully
+      } catch (e) {
+        print(e.toString());
+        return false; // Failed to delete account
+      }
+    } else {
+      return false; // User not authenticated
+    }
+  }
+
+  Future<void> _deleteUserAccounts(String uid) async {
+    final accountCollection = FirebaseFirestore.instance.collection('accounts');
+    final querySnapshot =
+    await accountCollection.doc(uid).collection('userAccounts').get();
+    final batch = FirebaseFirestore.instance.batch();
+    querySnapshot.docs.forEach((doc) {
+      batch.delete(doc.reference);
+    });
+    await batch.commit();
+  }
+
 
 
 

@@ -27,6 +27,14 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _deleteAccount() async {
+    bool success = await _auth.deleteAccount();
+    if (success) {
+      // Account deleted successfully, perform additional actions if needed
+    } else {
+      // Failed to delete account, handle the error
+    }
+  }
 
 
   void _showSettingsPanel(Account account) {
@@ -41,7 +49,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _deleteAccount(Account account) async {
+  void _deleteSngleAccount(Account account) async {
     await databaseService.deleteAccount(account.documentId);
   }
 
@@ -104,6 +112,7 @@ class _HomeState extends State<Home> {
                 title: Text('Delete Account'),
                 onTap: () {
                   // Perform action for Settings Option 1
+                  _deleteAccount();
                 },
               ),
 
@@ -123,7 +132,7 @@ class _HomeState extends State<Home> {
             _showSettingsPanel(account);
           },
           onDeleteAccount: (account) {
-            _deleteAccount(account);
+            _deleteSngleAccount(account);
           },
         ),
       ),
