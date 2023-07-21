@@ -4,7 +4,7 @@ import 'package:paspsword_manager_flutter2/screens/authenticate/register.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
-
+// testing to see if new branch created
   @override
   _AuthenticateState createState() => _AuthenticateState();
 }
