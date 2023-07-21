@@ -11,6 +11,10 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user object based on FirebaseUser
+  theUser? _userFromFirebaseUser2(User? user, Account userAccount) {
+    return user != null ? theUser(uid: user.uid) : null;
+  }
+
   theUser? _userFromFirebaseUser(User? user) {
     return user != null ? theUser(uid: user.uid) : null;
   }
@@ -22,8 +26,8 @@ class AuthService {
   }
 
 
-  // sign in anon
-  Future signInAnon() async {
+  // sign in anon -> no longer required
+ /* Future signInAnon() async {
     await Firebase.initializeApp();
     try {
       UserCredential result = await _auth.signInAnonymously();
@@ -33,19 +37,33 @@ class AuthService {
       print(e.toString());
       return null;
     }
-  }
+  }*/
 
-  // sign in with email & password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  // Sign in with Email and Password
+  Future<theUser?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
-      return _userFromFirebaseUser(user);
+
+      // Get the user's encryption key from Firestore
+      String encryptionKey = await _getEncryptionKey(user!.uid);
+
+      // Create the user's account with the retrieved key
+      Account userAccount = Account(accountName: '', userName: '', password: '', notes: '', documentId: '', encryptionKey: encryptionKey);
+
+      return _userFromFirebaseUser2(user, userAccount);
     } catch(e) {
       print(e.toString());
       return null;
     }
   }
+
+  Future<String> _getEncryptionKey(String uid) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('accounts').doc(uid).collection('encryptionKeys').doc(uid).get();
+    return snapshot.exists ? snapshot['key'] : '';
+  }
+
+
 
   // register with email & password
   Future registerWithEmailAndPassword(String email, String password) async {
@@ -54,9 +72,9 @@ class AuthService {
       User? user = result.user;
 
       // create a new document for that user with the uid
-      Account newAccount = Account(accountName: 'new account', userName: 'new username', password: 'new password', notes: '', documentId: ''); // create new Account object
+      Account newAccount = Account(accountName: 'new account', userName: 'new username', password: 'new password', notes: '', documentId: '', encryptionKey: ''); // create new Account object
       await DatabaseService(uid: user!.uid).updateUserData(newAccount); // pass the Account object
-      return _userFromFirebaseUser(user);
+      return _userFromFirebaseUser2(user, newAccount);
     } catch(e) {
       print(e.toString());
       return null;

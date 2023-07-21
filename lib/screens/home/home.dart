@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.add),
               label: Text('Add Account'),
               onPressed: () {
-                Account newAccount = Account(accountName: '', password: '', notes: '', userName: '', documentId: '');
+                Account newAccount = Account(accountName: '', password: '', notes: '', userName: '', documentId: '', encryptionKey: '');
                 _showSettingsPanel(newAccount);
               },
             ),

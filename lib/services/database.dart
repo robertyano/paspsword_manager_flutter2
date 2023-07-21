@@ -19,6 +19,12 @@ class DatabaseService {
         'password': account.password,
         'notes': account.notes,
       });
+
+      // Save the encryption key in a separate document
+      await accountCollection.doc(uid).collection('encryptionKeys').doc(newDoc.id).set({
+        'key': account.encryptionKey,
+      });
+
       return newDoc.id; // Return the ID of the newly created document
     } else {
       // If the documentId is not empty, update the existing document
@@ -28,9 +34,16 @@ class DatabaseService {
         'password': account.password,
         'notes': account.notes,
       });
+
+      // Save the encryption key in a separate document
+      await accountCollection.doc(uid).collection('encryptionKeys').doc(account.documentId).set({
+        'key': account.encryptionKey,
+      });
+
       return account.documentId; // Return the existing document ID
     }
   }
+
 
   Future<void> deleteAccount(String documentId) async {
     await accountCollection.doc(uid).collection('userAccounts').doc(documentId).delete();
@@ -66,6 +79,7 @@ class DatabaseService {
         password: doc.get('password') ?? '',
         notes: doc.get('notes') ?? '',
         documentId: doc.id,
+        encryptionKey: 'encryptionKey',
       );
     }).toList();
   }

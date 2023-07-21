@@ -1,5 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:paspsword_manager_flutter2/services/auth.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+
+import '../../models/account.dart';
+import '../../services/database.dart';
 
 class Register extends StatefulWidget {
 
@@ -19,6 +26,12 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error = '';
+
+  String generateUniqueKey() {
+    final random = Random.secure();
+    final values = List<int>.generate(32, (i) => random.nextInt(256));
+    return base64Url.encode(values);
+  }
 
 
   @override
@@ -90,21 +103,41 @@ class _RegisterState extends State<Register> {
 
                 SizedBox(height: 20.0),
                 ElevatedButton(
-                    child: const Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white)
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.pink),
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        dynamic result = await _auth.registerWithEmailAndPassword(email, password);
-                        if (result == null) {
-                          setState(() => error = 'Please supply a valid email');
-                        }
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.pink),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      // Generate a unique encryption key for the user
+                      final key = generateUniqueKey();
+
+                      // Create the user's account with the generated key
+                      Account newAccount = Account(
+                        accountName: 'new account',
+                        userName: 'new username',
+                        password: 'new password',
+                        notes: '',
+                        documentId: '',
+                        encryptionKey: key, // Save the generated key in the Account object
+                      );
+
+                      // Continue with user registration
+                      dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                      if (result == null) {
+                        setState(() => error = 'Please supply a valid email');
                       }
+
+                      // Store the user's account data in Firestore
+                      //await DatabaseService(uid: user!.uid).updateUserData(newAccount);
+                      await DatabaseService(uid: result.uid).updateUserData(newAccount);
+
+
                     }
+                  },
                 ),
                 SizedBox(height: 12.0),
                 Text(

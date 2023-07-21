@@ -5,7 +5,8 @@ class Account {
   final String password;
   final String notes;
   final String documentId;
+  final String encryptionKey;
 
-  Account({required this.accountName, required this.userName, required this.password, required this.notes, required this.documentId});
+  Account({required this.accountName, required this.userName, required this.password, required this.notes, required this.documentId, required this.encryptionKey});
 
 }
