@@ -129,12 +129,12 @@ class _RegisterState extends State<Register> {
                       dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                       if (result == null) {
                         setState(() => error = 'Please supply a valid email');
+                      } else {
+                        // Store the user's account data in Firestore
+                        //await DatabaseService(uid: user!.uid).updateUserData(newAccount);
+                        await DatabaseService(uid: result.uid).updateUserData(
+                            newAccount);
                       }
-
-                      // Store the user's account data in Firestore
-                      //await DatabaseService(uid: user!.uid).updateUserData(newAccount);
-                      await DatabaseService(uid: result.uid).updateUserData(newAccount);
-
 
                     }
                   },
