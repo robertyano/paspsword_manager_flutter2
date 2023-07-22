@@ -31,11 +31,12 @@ class DatabaseService {
         'notes': account.notes,
       });
 
-      // Save the encryption key in a separate document
-      await accountCollection.doc(uid).collection('encryptionKeys').doc(newDoc.id).set({
-        'key': account.encryptionKey,
-      });
-
+      // Save the encryption key in a separate document if it is not empty
+      if (account.encryptionKey!.isNotEmpty) {
+        await accountCollection.doc(uid).collection('encryptionKeys').doc(newDoc.id).set({
+          'key': account.encryptionKey,
+        });
+      }
       return newDoc.id; // Return the ID of the newly created document
     } else {
       // If the documentId is not empty, update the existing document
@@ -46,11 +47,12 @@ class DatabaseService {
         'notes': account.notes,
       });
 
-      // Save the encryption key in a separate document
-      await accountCollection.doc(uid).collection('encryptionKeys').doc(account.documentId).set({
-        'key': account.encryptionKey,
-      });
-
+      // Save the encryption key in a separate document if it is not empty
+      if (account.encryptionKey!.isNotEmpty) {
+        await accountCollection.doc(uid).collection('encryptionKeys').doc(account.documentId).set({
+          'key': account.encryptionKey,
+        });
+      }
       return account.documentId; // Return the existing document ID
     }
   }
