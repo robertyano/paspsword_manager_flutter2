@@ -103,14 +103,28 @@ class AuthService {
 
   Future<void> _deleteUserAccounts(String uid) async {
     final accountCollection = FirebaseFirestore.instance.collection('accounts');
-    final querySnapshot =
-    await accountCollection.doc(uid).collection('userAccounts').get();
+    final querySnapshot = await accountCollection.doc(uid).collection('userAccounts').get();
+    final batch = FirebaseFirestore.instance.batch();
+    querySnapshot.docs.forEach((doc) {
+      batch.delete(doc.reference);
+    });
+
+    // Call the function to delete encryptionKeys associated with the user
+    await _deleteEncryptionKeys(uid);
+
+    await batch.commit();
+  }
+
+  Future<void> _deleteEncryptionKeys(String uid) async {
+    final encryptionKeysCollection = FirebaseFirestore.instance.collection('accounts').doc(uid).collection('encryptionKeys');
+    final querySnapshot = await encryptionKeysCollection.get();
     final batch = FirebaseFirestore.instance.batch();
     querySnapshot.docs.forEach((doc) {
       batch.delete(doc.reference);
     });
     await batch.commit();
   }
+
 
 
 
