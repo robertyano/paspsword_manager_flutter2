@@ -65,21 +65,30 @@ class AuthService {
 
 
 
-  // register with email & password
+// register with email & password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      // create a new document for that user with the uid
-      Account newAccount = Account(accountName: 'new account', userName: 'new username', password: 'new password', notes: '', documentId: '', encryptionKey: ''); // create new Account object
-      await DatabaseService(uid: user!.uid).updateUserData(newAccount); // pass the Account object
-      return _userFromFirebaseUser2(user, newAccount);
+      // Check if the account already exists for the user
+      bool accountExists = await DatabaseService(uid: user!.uid).checkAccountExists();
+      if (!accountExists) {
+        // Create a new document for that user with the uid
+        /*Account newAccount = Account(accountName: 'new account', userName: 'new username', password: 'new password', notes: '', documentId: '', encryptionKey: ''); // create new Account object
+        await DatabaseService(uid: user.uid).updateUserData(newAccount); // pass the Account object
+        return _userFromFirebaseUser2(user, newAccount);*/
+        return _userFromFirebaseUser(user);
+      } else {
+        // Account already exists, return the user without creating a new account
+        return _userFromFirebaseUser(user);
+      }
     } catch(e) {
       print(e.toString());
       return null;
     }
   }
+
 
   Future<bool> deleteAccount() async {
     final currentUser = FirebaseAuth.instance.currentUser;

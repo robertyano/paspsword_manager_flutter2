@@ -9,6 +9,17 @@ class DatabaseService {
   // collection reference
   final CollectionReference accountCollection = FirebaseFirestore.instance.collection('accounts');
 
+  Future<bool> checkAccountExists() async {
+    try {
+      final userAccountsCollection = FirebaseFirestore.instance.collection('accounts').doc(uid).collection('userAccounts');
+      final querySnapshot = await userAccountsCollection.limit(1).get();
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
 
   Future<String> updateUserData(Account account) async {
     if (account.documentId.isEmpty) {
