@@ -21,24 +21,48 @@ class DatabaseService {
     }
   }
 
-  Future<String?> getEncryptionKey(String documentId) async {
+  // Update getEncryptionKey to dynamically fetch the encryption key from Firestore
+  Future<String?> getEncryptionKey() async {
     try {
-      final keySnapshot = await accountCollection.doc(uid).collection('encryptionKeys').doc(documentId).get();
-      print("Database.dart keySnapshot: " + keySnapshot.toString());
-      return keySnapshot.data()?['key'] as String?;
+      final keySnapshot = await accountCollection
+          .doc(uid)
+          .collection('encryptionKeys')
+          .get();
+      print("database.dart vid: " + uid);
+
+      // If the query returns any documents, get the encryption key from the first document
+      if (keySnapshot.docs.isNotEmpty) {
+        final encryptionKey = keySnapshot.docs.first.get('key') as String?;
+        return encryptionKey;
+      } else {
+        // If the query does not return any documents, it means the encryption key does not exist
+        print("Encryption key not found for the user.");
+
+        // You may handle this situation accordingly, for example, by generating and saving a new encryption key.
+        // For this example, we will return null when the encryption key is not found.
+        return null;
+      }
     } catch (e) {
-      print(e.toString());
+      print("Error retrieving encryption key: ${e.toString()}");
       return null;
     }
   }
 
 
 
+
   Future<String> updateUserData(Account account) async {
+    // Check if the encryption key is available in the Firestore
+    String? encryptionKey = await getEncryptionKey();
+    print("Encryption key: $encryptionKey"); // Print the retrieved encryption key
+
+    // If encryption key is not available, return an error or handle the situation accordingly
+    if (encryptionKey == null || encryptionKey.isEmpty) {
+      throw Exception("Encryption key not found for the user.");
+    }
+
     // Initialize the encryption key and IV (Initialization Vector)
-    final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
-    print("Database.dart Key: " + account.encryptionKey!);
-    //print("Database.dart keySnapshot: " + getEncryptionKey(documentId));
+    final key = Key.fromUtf8(encryptionKey);
     final iv = IV.fromLength(16);
 
     // Encrypt the password using AES encryption

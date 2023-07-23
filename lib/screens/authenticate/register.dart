@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
         // Proceed with other operations after registration if needed.
         // For example, you could create the 'Account' object here and store it in Firestore.
         final key = generateUniqueKey();
-        print("Key Length: " + key);
+        print("Register.dart Key Length: " + key);
         Account newAccount = Account(
           accountName: 'new account',
           userName: 'new username',
