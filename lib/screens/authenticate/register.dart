@@ -52,7 +52,7 @@ class _RegisterState extends State<Register> {
         );
 
         // Store the user's account data in Firestore
-        await DatabaseService(uid: result.uid).updateUserData(newAccount);
+        await DatabaseService(uid: result.uid).registerUserData(newAccount);
       }
     }
   }

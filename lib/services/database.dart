@@ -48,6 +48,48 @@ class DatabaseService {
     }
   }
 
+  Future<String> registerUserData(Account account) async {
+    // Initialize the encryption key and IV (Initialization Vector)
+    final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
+    //print("Database.dart Key: " + account.encryptionKey!);
+    //print("Database.dart keySnapshot: " + getEncryptionKey(documentId))
+    final iv = IV.fromLength(16);
+
+    // Encrypt the password using AES encryption
+    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
+    final encryptedPassword = encrypter.encrypt(account.password, iv: iv);
+    if (account.documentId.isEmpty) {
+      // If the documentId is empty, create a new document with an auto-generated ID
+      final newDoc = await accountCollection.doc(uid).collection('userAccounts').add({
+        'accountName': account.accountName,
+        'userName': account.userName,
+        'password': encryptedPassword.base64, // Save the encrypted password as a Base64-encoded string
+        'notes': account.notes,
+      });
+      // Save the encryption key in a separate document if it is not empty
+      if (account.encryptionKey!.isNotEmpty) {
+        await accountCollection.doc(uid).collection('encryptionKeys').doc(newDoc.id).set({
+          'key': account.encryptionKey,
+        });
+      }
+      return newDoc.id; // Return the ID of the newly created document
+    } else {
+      // If the documentId is not empty, update the existing document
+      await accountCollection.doc(uid).collection('userAccounts').doc(account.documentId).set({
+        'accountName': account.accountName,
+        'userName': account.userName,
+        'password': encryptedPassword.base64, // Save the encrypted password as a Base64-encoded string
+        'notes': account.notes,
+      });
+      // Save the encryption key in a separate document if it is not empty
+      if (account.encryptionKey!.isNotEmpty) {
+        await accountCollection.doc(uid).collection('encryptionKeys').doc(account.documentId).set({
+          'key': account.encryptionKey,
+        });
+      }
+      return account.documentId; // Return the existing document ID
+    }
+  }
 
 
 
