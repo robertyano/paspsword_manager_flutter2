@@ -21,11 +21,24 @@ class DatabaseService {
     }
   }
 
+  Future<String?> getEncryptionKey(String documentId) async {
+    try {
+      final keySnapshot = await accountCollection.doc(uid).collection('encryptionKeys').doc(documentId).get();
+      print("Database.dart keySnapshot: " + keySnapshot.toString());
+      return keySnapshot.data()?['key'] as String?;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
 
   Future<String> updateUserData(Account account) async {
     // Initialize the encryption key and IV (Initialization Vector)
     final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
     print("Database.dart Key: " + account.encryptionKey!);
+    print("Database.dart keySnapshot: " + getEncryptionKey(documentId))
     final iv = IV.fromLength(16);
 
     // Encrypt the password using AES encryption
