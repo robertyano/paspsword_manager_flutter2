@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paspsword_manager_flutter2/models/account.dart';
+import 'package:encrypt/encrypt.dart';
 
 class DatabaseService {
 
@@ -22,12 +23,21 @@ class DatabaseService {
 
 
   Future<String> updateUserData(Account account) async {
+    // Initialize the encryption key and IV (Initialization Vector)
+    final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
+    print("Database.dart Key: " + account.encryptionKey!);
+    final iv = IV.fromLength(16);
+
+    // Encrypt the password using AES encryption
+    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
+    final encryptedPassword = encrypter.encrypt(account.password, iv: iv);
+
     if (account.documentId.isEmpty) {
       // If the documentId is empty, create a new document with an auto-generated ID
       final newDoc = await accountCollection.doc(uid).collection('userAccounts').add({
         'accountName': account.accountName,
         'userName': account.userName,
-        'password': account.password,
+        'password': encryptedPassword.base64, // Save the encrypted password as a Base64-encoded string
         'notes': account.notes,
       });
 
@@ -43,7 +53,7 @@ class DatabaseService {
       await accountCollection.doc(uid).collection('userAccounts').doc(account.documentId).set({
         'accountName': account.accountName,
         'userName': account.userName,
-        'password': account.password,
+        'password': encryptedPassword.base64, // Save the encrypted password as a Base64-encoded string
         'notes': account.notes,
       });
 

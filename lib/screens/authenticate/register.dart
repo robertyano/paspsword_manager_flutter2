@@ -27,8 +27,8 @@ class _RegisterState extends State<Register> {
 
   String generateUniqueKey() {
     final random = Random.secure();
-    final values = List<int>.generate(32, (i) => random.nextInt(256));
-    return base64Url.encode(values);
+    final values = List<int>.generate(16, (i) => random.nextInt(256));
+    return values.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
   }
 
   // Function to handle the registration process
@@ -41,6 +41,7 @@ class _RegisterState extends State<Register> {
         // Proceed with other operations after registration if needed.
         // For example, you could create the 'Account' object here and store it in Firestore.
         final key = generateUniqueKey();
+        print("Key Length: " + key);
         Account newAccount = Account(
           accountName: 'new account',
           userName: 'new username',
