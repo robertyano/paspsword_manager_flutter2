@@ -38,7 +38,7 @@ class DatabaseService {
     // Initialize the encryption key and IV (Initialization Vector)
     final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
     print("Database.dart Key: " + account.encryptionKey!);
-    print("Database.dart keySnapshot: " + getEncryptionKey(documentId))
+    //print("Database.dart keySnapshot: " + getEncryptionKey(documentId));
     final iv = IV.fromLength(16);
 
     // Encrypt the password using AES encryption
