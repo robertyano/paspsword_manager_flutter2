@@ -148,7 +148,7 @@ class _SettingsFormState extends State<SettingsForm> {
                         password: _currentPassword,
                         notes: _currentNotes,
                         documentId: widget.account.documentId,
-                        encryptionKey: widget.account.encryptionKey, // Use the documentId from the current account
+                        encryptionKey: '', //widget.account.encryptionKey, // Use the documentId from the current account
                       );
                       await _databaseService.updateUserData(updatedAccount);
                       print('Account Updated');
