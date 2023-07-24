@@ -65,7 +65,8 @@ class _HomeState extends State<Home> {
   }
 
 
-  void _showSettingsPanel(Account account) {
+  void _showSettingsPanel(Account account) async {
+    await databaseService.decryptPassword(account.password);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

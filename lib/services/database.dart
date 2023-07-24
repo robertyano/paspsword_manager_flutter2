@@ -48,6 +48,37 @@ class DatabaseService {
     }
   }
 
+  // decrypt password to display to user in plain text
+  Future<String?> decryptPassword(String encryptedPasswordBase64) async {
+    try {
+      // Fetch encryption key
+      String? encryptionKey = await getEncryptionKey();
+      if (encryptionKey == null || encryptionKey.isEmpty) {
+        throw Exception("Encryption key not found for the user.");
+      }
+
+      // Initialize the encryption key and IV (Initialization Vector)
+      final key = Key.fromUtf8(encryptionKey);
+      final iv = IV.fromLength(16);
+
+      // Convert Base64-encoded string back to encrypted form
+      final encryptedPassword = Encrypted.fromBase64(encryptedPasswordBase64);
+
+      // Initialize the decrypter
+      final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
+
+      // Decrypt the password
+      final decryptedPassword = encrypter.decrypt(encryptedPassword, iv: iv);
+      print("Database.dart decrypted password: " + decryptedPassword);
+      return decryptedPassword;
+
+    } catch (e) {
+      print("Error decrypting password: ${e.toString()}");
+      return null;
+    }
+  }
+
+
   Future<String> registerUserData(Account account) async {
     // Initialize the encryption key and IV (Initialization Vector)
     final key = Key.fromUtf8(account.encryptionKey!); // Make sure account.encryptionKey is not null
