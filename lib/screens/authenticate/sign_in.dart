@@ -39,106 +39,108 @@ class _SignInState extends State<SignIn> {
         title: const Text('Password Secure Kiwi'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: screenHeight * 0.35,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Image.asset('assets/evil_kiwi_logo.jpg', fit: BoxFit.fitWidth),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                SizedBox(
-                  width: screenWidth * 0.8,
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Email',
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: screenHeight * 0.35,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.asset('assets/evil_kiwi_logo.jpg', fit: BoxFit.fitWidth),
                     ),
-                    validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                    onChanged: (val) {
-                      setState(() => email = val);
-                    },
                   ),
-                ),
-                const SizedBox(height: 20.0),
-                SizedBox(
-                  width: screenWidth * 0.8,
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Password',
+                  const SizedBox(height: 20.0),
+                  SizedBox(
+                    width: screenWidth * 0.8,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Email',
+                      ),
+                      validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
                     ),
-                    validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
-                    obscureText: true,
-                    onChanged: (val) {
-                      setState(() => password = val);
+                  ),
+                  const SizedBox(height: 20.0),
+                  SizedBox(
+                    width: screenWidth * 0.8,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Password',
+                      ),
+                      validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
+                      obscureText: true,
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // TODO: FORGOT PASSWORD SCREEN GOES HERE
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                      );
                     },
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // TODO: FORGOT PASSWORD SCREEN GOES HERE
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
-                    );
-                  },
-                  child: const Text(
-                    'Forgot Password',
-                    style: TextStyle(color: Colors.blue, fontSize: 15),
-                  ),
-                ),
-                Container(
-                  height: screenHeight * 0.07,
-                  width: screenWidth * 0.5,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ElevatedButton(
                     child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      'Forgot Password',
+                      style: TextStyle(color: Colors.blue, fontSize: 15),
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() => loading = true);
-                        dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-                        if (result == null) {
-                          setState(() {
-                            error = 'Could not sign in with those credentials';
-                            loading = false;
-                          });
+                  ),
+                  Container(
+                    height: screenHeight * 0.07,
+                    width: screenWidth * 0.5,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: ElevatedButton(
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() => loading = true);
+                          dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                          if (result == null) {
+                            setState(() {
+                              error = 'Could not sign in with those credentials';
+                              loading = false;
+                            });
+                          }
                         }
-                      }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  Text(
+                    error,
+                    style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                  ),
+                  const SizedBox(height: 8.0),
+                  TextButton(
+                    onPressed: () {
+                      // TODO: Register new user
+                      widget.toggleView();
                     },
+                    child: const Text(
+                      'New User? Create Account',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: const TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
-                const SizedBox(height: 8.0),
-                TextButton(
-                  onPressed: () {
-                    // TODO: Register new user
-                    widget.toggleView();
-                  },
-                  child: const Text(
-                    'New User? Create Account',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
