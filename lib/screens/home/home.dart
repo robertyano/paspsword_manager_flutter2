@@ -65,7 +65,8 @@ class _HomeState extends State<Home> {
   }
 
 
-  void _showSettingsPanel(Account account) {
+  void _showSettingsPanel(Account account) async {
+    await databaseService.decryptPassword(account.password);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -120,7 +121,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.add),
               label: Text('Add Account'),
               onPressed: () {
-                Account newAccount = Account(accountName: '', password: '', notes: '', userName: '', documentId: '');
+                Account newAccount = Account(accountName: '', password: '', notes: '', userName: '', documentId: '', encryptionKey: '');
                 _showSettingsPanel(newAccount);
               },
             ),

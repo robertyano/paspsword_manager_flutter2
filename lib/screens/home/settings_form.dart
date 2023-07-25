@@ -28,11 +28,15 @@ class _SettingsFormState extends State<SettingsForm> {
   // creating instance of 'DatabaseService' with user's ID
   final DatabaseService _databaseService = DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid); // update UID to be dynamic
 
+  final passwordController = TextEditingController();
+
   // form values
   late String _currentAccountName;
   late String _currentUserName;
   late String _currentPassword;
   String _currentNotes = ''; // Initialize to an empty string because this is not a required field
+
+  bool _isPasswordDecrypted = false;
 
   @override
   void initState() {
@@ -41,8 +45,26 @@ class _SettingsFormState extends State<SettingsForm> {
     _currentAccountName = widget.account.accountName;
     _currentUserName = widget.account.userName;
     _currentPassword = widget.account.password;
+    if (!_isPasswordDecrypted) {
+      _decryptPassword();
+    }
     _currentNotes = widget.account.notes;
 
+  }
+
+  _decryptPassword() async {
+    String? decryptedPassword = await _databaseService.decryptPassword(widget.account.password);
+    if (decryptedPassword != null) {
+      setState(() {
+        print("Settings_form.dart password enter decryption step");
+        _currentPassword = decryptedPassword;
+        print("Settings_form.dart decrypted password is: " + _currentPassword);
+        passwordController.text = _currentPassword;
+        _isPasswordDecrypted = true;
+      });
+    } else {
+      print("Settings_form.dart password not decrypted");
+    }
   }
 
 
@@ -72,11 +94,20 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           SizedBox(height: 20.0,),
           TextFormField(
-            initialValue: widget.account.password,
+            controller: passwordController,
             decoration: InputDecoration(labelText: "Password"),
             validator: (val) => val!.isEmpty ? 'Please enter a password' : null,
-            onChanged: (val) => setState(() => _currentPassword = val),
+            onChanged: (val) {
+              setState(() {
+                _currentPassword = val;
+                passwordController.text = val;  // Update the controller's text to the new value
+                passwordController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: passwordController.text.length),  // Move cursor to the end of the text
+                );
+              });
+            },
           ),
+
           SizedBox(height: 20.0,),
           TextFormField(
             initialValue: widget.account.notes,
@@ -116,7 +147,8 @@ class _SettingsFormState extends State<SettingsForm> {
                         userName: _currentUserName,
                         password: _currentPassword,
                         notes: _currentNotes,
-                        documentId: widget.account.documentId, // Use the documentId from the current account
+                        documentId: widget.account.documentId,
+                        encryptionKey: '', //widget.account.encryptionKey, // Use the documentId from the current account
                       );
                       await _databaseService.updateUserData(updatedAccount);
                       print('Account Updated');
