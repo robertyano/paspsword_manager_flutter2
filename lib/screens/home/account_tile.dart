@@ -51,8 +51,13 @@ class AccountTile extends StatelessWidget {
               backgroundColor: Colors.red,
               backgroundImage: AssetImage('assets/evil_kiwi_bird_tattoo_design.png'),
             ),
-            title: Text('Account: ${account.accountName}'),
-            subtitle: Text('Username: ${account.userName}'),
+            title: Text(
+                '${account.accountName}',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text('${account.userName}'),
             onTap: () => onAccountSelected(account),
           ),
         ),
