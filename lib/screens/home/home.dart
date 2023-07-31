@@ -71,18 +71,35 @@ class _HomeState extends State<Home> {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.6, // Adjust this value as needed
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: SettingsForm(account: account, uid: FirebaseAuth.instance.currentUser!.uid),
+        final screenWidth = MediaQuery.of(context).size.width;
+        final horizontalPaddingPercentage = 0.1; // Adjust this percentage as needed
+        final horizontalPadding = screenWidth * horizontalPaddingPercentage;
+
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: horizontalPadding,
+              right: horizontalPadding,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: SettingsForm(account: account, uid: FirebaseAuth.instance.currentUser!.uid),
+                ),
+                SizedBox(height: 20.0), // Add extra spacing between the form and the keyboard
+              ],
             ),
           ),
         );
       },
     );
   }
+
+
+
 
 
   void _deleteSngleAccount(Account account) async {
