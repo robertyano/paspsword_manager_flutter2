@@ -3,6 +3,8 @@ import 'package:paspsword_manager_flutter2/services/auth.dart';  // import authe
 import 'package:paspsword_manager_flutter2/shared/loading.dart';
 import 'package:flutter/material.dart';  // import material library with many design components
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart'; // Import the services package
+
 
 import '../forgot_password/forgot_password.dart';  // import the firebase_core plugin
 
@@ -67,6 +69,7 @@ class _SignInState extends State<SignIn> {
                       onChanged: (val) {
                         setState(() => email = val);
                       },
+                      autofillHints: [AutofillHints.email], // This line enables email to autofill from users device
                     ),
                   ),
                   const SizedBox(height: 20.0),

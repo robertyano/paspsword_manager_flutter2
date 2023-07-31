@@ -21,6 +21,9 @@ class _AccountListState extends State<AccountList> {
     if (accounts == null) {
       return CircularProgressIndicator(); // show a loading spinner
     } else {
+      // Sort the list of accounts based on the account name in alphabetical order
+      accounts.sort((a, b) => a.accountName.compareTo(b.accountName));
+
       return ListView.builder(
         itemCount: accounts.length,
         itemBuilder: (context, index) {

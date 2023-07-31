@@ -70,98 +70,108 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget> [
-          Text(
-            'Add New Account',
-            style: TextStyle(fontSize: 18.0),
-          ),
-          SizedBox(height: 20.0,),
-          TextFormField(
-            initialValue: widget.account.accountName,
-            decoration: InputDecoration(labelText: "Account Name"),
-            validator: (val) => val!.isEmpty ? 'Please enter an account name' : null,
-            onChanged: (val) => setState(() => _currentAccountName = val),
+    return SingleChildScrollView(
+      child: Padding(  // <-- And this
+      padding: EdgeInsets.only(
+      top: 8.0,
+      left: 8.0,
+      right: 8.0,
+      bottom: MediaQuery.of(context).viewInsets.bottom + 8.0,
+    ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget> [
+            Text(
+              'Add New Account',
+              style: TextStyle(fontSize: 18.0),
             ),
-          SizedBox(height: 20.0,),
-          TextFormField(
-            initialValue: widget.account.userName,
-            decoration: InputDecoration(labelText: "Username"),
-            validator: (val) => val!.isEmpty ? 'Please enter a username' : null,
-            onChanged: (val) => setState(() => _currentUserName = val),
-          ),
-          SizedBox(height: 20.0,),
-          TextFormField(
-            controller: passwordController,
-            decoration: InputDecoration(labelText: "Password"),
-            validator: (val) => val!.isEmpty ? 'Please enter a password' : null,
-            onChanged: (val) {
-              setState(() {
-                _currentPassword = val;
-                passwordController.text = val;  // Update the controller's text to the new value
-                passwordController.selection = TextSelection.fromPosition(
-                  TextPosition(offset: passwordController.text.length),  // Move cursor to the end of the text
-                );
-              });
-            },
-          ),
-
-          SizedBox(height: 20.0,),
-          TextFormField(
-            initialValue: widget.account.notes,
-            decoration: InputDecoration(labelText: "Notes"),
-            // validator: (val) => val!.isEmpty ? '' : null,
-            onChanged: (val) => setState(() => _currentNotes = (val.isEmpty ? null : val)!),
-
-          ),
-
-
-          SizedBox(height: 20.0,),
-          Align(
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context); // Cancel and go back
-                  },
-                ),
-                SizedBox(width: 10.0),
-                ElevatedButton(
-                  child: Text(
-                    'Update',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      Account updatedAccount = Account(
-                        accountName: _currentAccountName,
-                        userName: _currentUserName,
-                        password: _currentPassword,
-                        notes: _currentNotes,
-                        documentId: widget.account.documentId,
-                        encryptionKey: '', //widget.account.encryptionKey, // Use the documentId from the current account
-                      );
-                      await _databaseService.updateUserData(updatedAccount);
-                      print('Account Updated');
-                      Navigator.pop(context);  // Close the bottom sheet
-                    }
-                  },
-                ),
-              ],
+            SizedBox(height: 20.0,),
+            TextFormField(
+              initialValue: widget.account.accountName,
+              decoration: InputDecoration(labelText: "Account Name"),
+              validator: (val) => val!.isEmpty ? 'Please enter an account name' : null,
+              onChanged: (val) => setState(() => _currentAccountName = val),
+              ),
+            SizedBox(height: 20.0,),
+            TextFormField(
+              initialValue: widget.account.userName,
+              decoration: InputDecoration(labelText: "Username"),
+              validator: (val) => val!.isEmpty ? 'Please enter a username' : null,
+              onChanged: (val) => setState(() => _currentUserName = val),
             ),
-          ),
+            SizedBox(height: 20.0,),
+            TextFormField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: "Password"),
+              validator: (val) => val!.isEmpty ? 'Please enter a password' : null,
+              onChanged: (val) {
+                setState(() {
+                  _currentPassword = val;
+                  passwordController.text = val;  // Update the controller's text to the new value
+                  passwordController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: passwordController.text.length),  // Move cursor to the end of the text
+                  );
+                });
+              },
+            ),
 
-        ],
+            SizedBox(height: 20.0,),
+            TextFormField(
+              initialValue: widget.account.notes,
+              decoration: InputDecoration(labelText: "Notes"),
+              // validator: (val) => val!.isEmpty ? '' : null,
+              onChanged: (val) => setState(() => _currentNotes = (val.isEmpty ? null : val)!),
+
+            ),
+
+
+            SizedBox(height: 20.0,),
+            Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context); // Cancel and go back
+                    },
+                  ),
+                  SizedBox(width: 10.0),
+                  ElevatedButton(
+                    child: Text(
+                      'Update',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        Account updatedAccount = Account(
+                          accountName: _currentAccountName,
+                          userName: _currentUserName,
+                          password: _currentPassword,
+                          notes: _currentNotes,
+                          documentId: widget.account.documentId,
+                          encryptionKey: '', //widget.account.encryptionKey, // Use the documentId from the current account
+                        );
+                        await _databaseService.updateUserData(updatedAccount);
+                        print('Account Updated');
+                        Navigator.pop(context);  // Close the bottom sheet
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+          ),
         ),
-      );
+      ),
+    );
     }
   }
