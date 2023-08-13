@@ -1,76 +1,40 @@
 {
   "project_info": {
-    "project_number": "792874032621",
-    "project_id": "ninja-brew-crew-9f20e",
-    "storage_bucket": "ninja-brew-crew-9f20e.appspot.com"
+    "project_number": "819153249812",
+    "project_id": "psk-development-environment",
+    "storage_bucket": "psk-development-environment.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792874032621:android:64b4abeff31333c0a89be4",
-        "android_client_info": {
-          "package_name": "com.robertyano.brew_crew"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "792874032621-ktm7eojtcs51iub5v5upf8iq2t2es1ha.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAd152mnqrHvyR1OfCmJ-Yc9vtJVI4NnBQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "792874032621-ktm7eojtcs51iub5v5upf8iq2t2es1ha.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "792874032621-3p088p4l8tkfmj6a7bo3eskk703s7ii5.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.robertyano.brewcrew"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:792874032621:android:77447452e1d54df8a89be4",
+        "mobilesdk_app_id": "1:819153249812:android:511035d8846fa2494de901",
         "android_client_info": {
           "package_name": "com.robertyano.passwordsecurekiwi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "792874032621-ktm7eojtcs51iub5v5upf8iq2t2es1ha.apps.googleusercontent.com",
+          "client_id": "819153249812-h5edscan4scnvkabphtt3sh6i40n364o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAd152mnqrHvyR1OfCmJ-Yc9vtJVI4NnBQ"
+          "current_key": "AIzaSyBedOky_elrI7T7o4nQTyJymRfpgsgcjGw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "792874032621-ktm7eojtcs51iub5v5upf8iq2t2es1ha.apps.googleusercontent.com",
+              "client_id": "819153249812-h5edscan4scnvkabphtt3sh6i40n364o.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "792874032621-3p088p4l8tkfmj6a7bo3eskk703s7ii5.apps.googleusercontent.com",
+              "client_id": "819153249812-nr80jhfce5mqecmva2kb2kutqts22rcb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.robertyano.brewcrew"
+                "bundle_id": "com.robertyano.passwordsecurekiwi"
               }
             }
           ]
@@ -80,3 +44,9 @@
   ],
   "configuration_version": "1"
 }
+
+
+
+
+
+
